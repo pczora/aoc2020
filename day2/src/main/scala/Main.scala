@@ -8,8 +8,7 @@ object Main {
   }
 
   def parseLine(line: String): Line = {
-    val parts = line.split(":")
-    parts match {
+    line.split(":") match {
       case Array(policy, password) => {
         Line(parsePolicy(policy), password)
       }
@@ -29,9 +28,5 @@ object Main {
   }
 }
 
-case class Line(policy: Policy, password: String) {
-  override def toString: String = policy.toString + " " +  password
-}
-case class Policy(from: Int, to: Int, char: Char) {
-  override def toString: String = from + "-" + to + " " + char
-}
+case class Line(policy: Policy, password: String)
+case class Policy(from: Int, to: Int, char: Char)
