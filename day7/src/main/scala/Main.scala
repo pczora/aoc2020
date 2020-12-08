@@ -12,6 +12,7 @@ object Main {
       }
     }))
 
+    println(bagsInBag(bagGraph, Bag("shiny gold")))
   }
 
   def parseBag(line: String) = {
@@ -75,6 +76,26 @@ object Main {
     val containsList = graph(bag)
     containsTransitivelyContainsList(graph, containsList, contains)
   }
+
+  def bagsInBag(graph: Map[Bag, List[Contains]], bag: Bag) = {
+    def bagsInBagAcc(
+        acc: Long,
+        graph: Map[Bag, List[Contains]],
+        bagContents: List[Contains]
+    ): Long = {
+      bagContents match {
+        case Nil => acc
+        case x :: xs =>
+          bagsInBagAcc(
+            acc + x.amount + x.amount * bagsInBagAcc(0, graph, graph(x.bag)),
+            graph,
+            xs
+          )
+      }
+    }
+    bagsInBagAcc(0L, graph, graph(bag))
+  }
+
 }
 
 case class Bag(name: String)
